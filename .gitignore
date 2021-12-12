@@ -1,3 +1,6 @@
+.cache.json
 .env
 .idea
+__pycache__
+stats
 .venv

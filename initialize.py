@@ -3,6 +3,7 @@ import requests
 import time
 from datetime import datetime, timedelta
 
+from bs4 import BeautifulSoup
 from dotenv import dotenv_values
 from pytz import timezone, utc
 
@@ -43,3 +44,12 @@ print("Advent of Code started!")
 # Download input txt file from AoC website
 with open(f"{year}/day{day}/day{day}.txt", "w") as f:
     f.write(requests.get(f"https://adventofcode.com/{year}/day/{day}/input", cookies=cookies).content.decode())
+
+
+# Parse and download example input from AoC website
+# Uses content of first <code> inside a <pre> (may be incorrect)
+resp: requests.Response = requests.get(f"https://adventofcode.com/2021/day/{day}")
+soup: BeautifulSoup = BeautifulSoup(resp.content.decode(), 'html.parser')
+if example := soup.find("pre").code.contents[0]:
+    with open(f"{year}/day{day}/day{day}_example.txt", "w") as f:
+        f.write(example+"\n")
